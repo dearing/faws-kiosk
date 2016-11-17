@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.Networking.Connectivity;
+using System.Net;
+using System.Net.Sockets;
 
 namespace FAWS_Kiosk
 {
@@ -60,6 +63,7 @@ namespace FAWS_Kiosk
         {
             try
             {
+                status.Text = string.Format("FAWS-3RD // {0}", GetIpAddress().ToString());
                 Marquee.Navigate(new Uri(URL));
                 Marquee.Width = ApplicationView.GetForCurrentView().VisibleBounds.Width;
                 Marquee.Height = ApplicationView.GetForCurrentView().VisibleBounds.Height;
@@ -81,6 +85,20 @@ namespace FAWS_Kiosk
             {
                 Marquee.NavigateToString(String.Format("<html><body><h2>{0}</h2><hr /><code>{1}</code></body></html>", ex.Message, ex.StackTrace));
             }
+        }
+
+        public IPAddress GetIpAddress()
+        {
+            var hosts = NetworkInformation.GetHostNames();
+            foreach (var host in hosts)
+            {
+                IPAddress addr;
+                if (!IPAddress.TryParse(host.DisplayName, out addr)) continue;
+                if (addr.AddressFamily != AddressFamily.InterNetwork) continue;
+                if (addr.ToString().StartsWith("169.254.")) continue;
+                return addr;
+            }
+            return null;
         }
     }
 

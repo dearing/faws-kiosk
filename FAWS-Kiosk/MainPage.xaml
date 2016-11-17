@@ -8,5 +8,6 @@
     mc:Ignorable="d" VerticalAlignment="Top" HorizontalAlignment="Left" >
     <Grid x:Name="Port">
         <WebView x:Name="Marquee" HorizontalAlignment="Left" VerticalAlignment="Top" Loaded="Marquee_Loaded" LayoutUpdated="Marquee_LayoutUpdated" />
+        <TextBox x:Name="status" HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Bottom" IsReadOnly="True" Opacity="0.5"/>
     </Grid>
 </Page>
