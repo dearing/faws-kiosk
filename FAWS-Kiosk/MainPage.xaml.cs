@@ -40,7 +40,6 @@ namespace FAWS_Kiosk
             Registry.Add(3, "http://fawsdashboards.rackspace.com/ticketstats/index2.php");
             Registry.Add(4, "http://fawsdashboards.rackspace.com/ticketstats/index3.php");
             Registry.Add(5, "http://fawsdashboards.rackspace.com/ticketstats/index4.php");
-            Registry.Add(6, "http://www.my90stv.com/#Weo4o6_Ybh8");
 
             DispatcherTimer dt = new DispatcherTimer();
             dt.Tick += Dt_Tick;
