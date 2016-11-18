@@ -63,10 +63,8 @@ namespace FAWS_Kiosk
         {
             try
             {
-                status.Text = string.Format("FAWS-3RD // {0}", GetIpAddress().ToString());
                 Marquee.Navigate(new Uri(URL));
-                Marquee.Width = ApplicationView.GetForCurrentView().VisibleBounds.Width;
-                Marquee.Height = ApplicationView.GetForCurrentView().VisibleBounds.Height;
+                Refresh();
             }
             catch (FormatException ex)
             {
@@ -78,6 +76,7 @@ namespace FAWS_Kiosk
         {
             try
             {
+                status.Text = string.Format("FAWS-3RD // {0}", GetIpAddress().ToString());
                 Marquee.Width = ApplicationView.GetForCurrentView().VisibleBounds.Width;
                 Marquee.Height = ApplicationView.GetForCurrentView().VisibleBounds.Height;
             }
@@ -87,7 +86,7 @@ namespace FAWS_Kiosk
             }
         }
 
-        public IPAddress GetIpAddress()
+        private IPAddress GetIpAddress()
         {
             var hosts = NetworkInformation.GetHostNames();
             foreach (var host in hosts)
