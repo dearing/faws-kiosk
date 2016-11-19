@@ -7,7 +7,7 @@ using Windows.Networking.Connectivity;
 using System.Net;
 using System.Net.Sockets;
 
-namespace FAWS_Kiosk
+namespace Kiosk
 {
     public sealed partial class MainPage : Page
     {

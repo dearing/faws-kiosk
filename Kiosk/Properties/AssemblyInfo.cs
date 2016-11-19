@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("FAWS-Kiosk")]
-[assembly: AssemblyDescription("UMP Application for Kiosk")]
+[assembly: AssemblyTitle("Kiosk")]
+[assembly: AssemblyDescription("simple Windows IoT kiosk application")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Rackspace Hosting")]
-[assembly: AssemblyProduct("FAWS-Kiosk")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Kiosk")]
 [assembly: AssemblyCopyright("Copyright © Jacob Dearing 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
