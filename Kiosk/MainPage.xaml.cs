@@ -7,63 +7,75 @@ using Windows.Networking.Connectivity;
 using System.Net;
 using System.Net.Sockets;
 
+
 namespace Kiosk
 {
+
+    public static class Registry
+    {
+        private static int index = 0;
+        public static List<Uri> URIs = new List<Uri>();
+        
+        static Registry()
+        {
+            URIs.Add(new Uri("http://www.randomgoat.com/"));
+            URIs.Add(new Uri("http://dashboard.rackerroush.com/3rd/"));
+            URIs.Add(new Uri("http://dashboard.rackerroush.com/maintenance/"));
+            URIs.Add(new Uri("http://fawsdashboards.rackspace.com/ticketstats/index.php"));
+            URIs.Add(new Uri("http://fawsdashboards.rackspace.com/ticketstats/index2.php"));
+            URIs.Add(new Uri("http://fawsdashboards.rackspace.com/ticketstats/index3.php"));
+            URIs.Add(new Uri("http://fawsdashboards.rackspace.com/ticketstats/index4.php"));
+        }
+
+        public static Uri Cycle()
+        {
+            if (index > URIs.Count) {
+                index = 0;
+            }
+            return URIs[index++];
+        }
+    }
+
     public sealed partial class MainPage : Page
     {
-
-        private static int Index;
-        private static Dictionary<int, string> Registry;
 
         public MainPage()
         {
 
-            Registry = new Dictionary<int, string>();
-            Registry.Add(0, "http://dashboard.rackerroush.com/3rd/");
-            Registry.Add(1, "http://dashboard.rackerroush.com/maintenance/");
-            Registry.Add(2, "http://fawsdashboards.rackspace.com/ticketstats/index.php");
-            Registry.Add(3, "http://fawsdashboards.rackspace.com/ticketstats/index2.php");
-            Registry.Add(4, "http://fawsdashboards.rackspace.com/ticketstats/index3.php");
-            Registry.Add(5, "http://fawsdashboards.rackspace.com/ticketstats/index4.php");
-
             DispatcherTimer dt = new DispatcherTimer();
             dt.Tick += Dt_Tick;
-            dt.Interval = new TimeSpan(0, 0, 30);
+            dt.Interval = new TimeSpan(0, 0, 10);
             dt.Start();
+
             this.InitializeComponent();
+
+            Marquee.Navigate(Registry.Cycle());
         }
 
         private void Dt_Tick(object sender, object e)
         {
-
-            Index += 1;
-            if (Index >= Registry.Count)
-            {
-                Index = 0;
-            }
-            Update(Registry[Index]);
-
+            Marquee.Navigate(Registry.Cycle());
+            Update();
         }
 
         private void Marquee_Loaded(object sender, RoutedEventArgs e)
         {
             if (!ApplicationView.GetForCurrentView().TryEnterFullScreenMode())
             {
-                Update(Registry[Index]);
+                Update();
             }
 
         }
 
         private void Marquee_LayoutUpdated(object sender, object e)
         {
-            Update(Registry[Index]);
+            Update();
         }
 
-        private void Update(string URL)
+        private void Update()
         {
             try
             {
-                Marquee.Navigate(new Uri(URL));
                 Refresh();
             }
             catch (FormatException ex)
