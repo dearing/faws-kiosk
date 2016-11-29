@@ -6,7 +6,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.Networking.Connectivity;
 using System.Net;
 using System.Net.Sockets;
-
+using System.Reflection;
 
 namespace Kiosk
 {
@@ -18,18 +18,18 @@ namespace Kiosk
         
         static Registry()
         {
-            URIs.Add(new Uri("http://www.randomgoat.com/"));
             URIs.Add(new Uri("http://dashboard.rackerroush.com/3rd/"));
             URIs.Add(new Uri("http://dashboard.rackerroush.com/maintenance/"));
             URIs.Add(new Uri("http://fawsdashboards.rackspace.com/ticketstats/index.php"));
             URIs.Add(new Uri("http://fawsdashboards.rackspace.com/ticketstats/index2.php"));
             URIs.Add(new Uri("http://fawsdashboards.rackspace.com/ticketstats/index3.php"));
             URIs.Add(new Uri("http://fawsdashboards.rackspace.com/ticketstats/index4.php"));
+            URIs.Add(new Uri("http://drone-wall.rax.io/"));
         }
 
         public static Uri Cycle()
         {
-            if (index > URIs.Count) {
+            if (index >= URIs.Count) {
                 index = 0;
             }
             return URIs[index++];
@@ -38,33 +38,34 @@ namespace Kiosk
 
     public sealed partial class MainPage : Page
     {
+        private string _version;
 
         public MainPage()
         {
 
+
+            _version = string.Format("v{0}.{1}.{2}.{3}",
+                Windows.ApplicationModel.Package.Current.Id.Version.Major.ToString(),
+                Windows.ApplicationModel.Package.Current.Id.Version.Minor.ToString(),
+                Windows.ApplicationModel.Package.Current.Id.Version.Revision.ToString(),
+                Windows.ApplicationModel.Package.Current.Id.Version.Build.ToString()
+                );
+            
             DispatcherTimer dt = new DispatcherTimer();
             dt.Tick += Dt_Tick;
-            dt.Interval = new TimeSpan(0, 0, 10);
+            dt.Interval = new TimeSpan(0, 0, 30);
             dt.Start();
 
             this.InitializeComponent();
 
             Marquee.Navigate(Registry.Cycle());
+            Update();
         }
 
         private void Dt_Tick(object sender, object e)
         {
             Marquee.Navigate(Registry.Cycle());
             Update();
-        }
-
-        private void Marquee_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (!ApplicationView.GetForCurrentView().TryEnterFullScreenMode())
-            {
-                Update();
-            }
-
         }
 
         private void Marquee_LayoutUpdated(object sender, object e)
@@ -76,19 +77,7 @@ namespace Kiosk
         {
             try
             {
-                Refresh();
-            }
-            catch (FormatException ex)
-            {
-                Marquee.NavigateToString(String.Format("<html><body><h2>{0}</h2><hr /><code>{1}</code></body></html>", ex.Message, ex.StackTrace));
-            }
-        }
-
-        private void Refresh()
-        {
-            try
-            {
-                status.Text = string.Format("FAWS-3RD // {0}", GetIpAddress().ToString());
+                status.Text = string.Format("FAWS-3RD // {0} // {1}", GetIpAddress().ToString(), _version);
                 Marquee.Width = ApplicationView.GetForCurrentView().VisibleBounds.Width;
                 Marquee.Height = ApplicationView.GetForCurrentView().VisibleBounds.Height;
             }
