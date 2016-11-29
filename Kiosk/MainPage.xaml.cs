@@ -39,8 +39,16 @@ namespace Kiosk
     {
         private string _version;
 
+
+
         public MainPage()
         {
+
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            //var localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+
+
+            //localSettings.Values[""] = 
 
             _version = this.GetType().GetTypeInfo().Assembly.GetName().Version.ToString(4);
 
