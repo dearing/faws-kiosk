@@ -24,7 +24,6 @@ namespace Kiosk
             URIs.Add(new Uri("http://fawsdashboards.rackspace.com/ticketstats/index2.php"));
             URIs.Add(new Uri("http://fawsdashboards.rackspace.com/ticketstats/index3.php"));
             URIs.Add(new Uri("http://fawsdashboards.rackspace.com/ticketstats/index4.php"));
-            URIs.Add(new Uri("http://drone-wall.rax.io/"));
         }
 
         public static Uri Cycle()
@@ -43,14 +42,8 @@ namespace Kiosk
         public MainPage()
         {
 
+            _version = this.GetType().GetTypeInfo().Assembly.GetName().Version.ToString(4);
 
-            _version = string.Format("v{0}.{1}.{2}.{3}",
-                Windows.ApplicationModel.Package.Current.Id.Version.Major.ToString(),
-                Windows.ApplicationModel.Package.Current.Id.Version.Minor.ToString(),
-                Windows.ApplicationModel.Package.Current.Id.Version.Revision.ToString(),
-                Windows.ApplicationModel.Package.Current.Id.Version.Build.ToString()
-                );
-            
             DispatcherTimer dt = new DispatcherTimer();
             dt.Tick += Dt_Tick;
             dt.Interval = new TimeSpan(0, 0, 30);
